@@ -7,7 +7,7 @@ router = APIRouter()
 def login():
     pass
 
-# ログイン情報詳細取得API
+# ログイン情報取得API
 @router.post("/me")
 def me():
     pass
