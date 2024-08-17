@@ -29,13 +29,27 @@ def createTokens(user_id: int):
 
 # ログインAPI
 @router.post("/login")
-def login():
-    pass
+async def login(
+    formData: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
+):
+    # 入力された情報に紐づくユーザデータの取得
+    user = AuthCrud.getUser(db, mail=formData.username, password=formData.password)
+    if not user:
+        # 入力された情報に紐づくユーザデータが存在しない場合
+        raise HTTPException(
+            # 401 エラーの返却
+            status_code=401,
+            detail=f"メールアドレスまたはパスワードが違います。",
+        )
+    # トークン生成し返却
+    return createTokens(user.id)
+
 
 # ログイン情報取得API
 @router.post("/me")
 def me():
     pass
+
 
 # ログアウトAPI
 @router.get("/logout")
