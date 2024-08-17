@@ -10,6 +10,23 @@ import cruds.Auth as AuthCrud
 
 router = APIRouter()
 
+
+# トークン生成処理
+def createTokens(user_id: int):
+    # ペイロード生成
+    accessPayload = {
+        "token_type": "access_token",
+        "exp": datetime.utcnow() + timedelta(minutes=60),
+        "user_id": user_id,
+    }
+    # アクセストークンの生成
+    accessToken = jwt.encode(
+        accessPayload, os.environ["SECRET_KEY"], algorithm="HS256"
+    )
+    # アクセストークンの返却
+    return {"access_token": accessToken, "token_type": "bearer"}
+
+
 # ログインAPI
 @router.post("/login")
 def login():
