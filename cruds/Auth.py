@@ -13,3 +13,7 @@ def getUser(db: Session, mail: str, password: str):
         )
         .first()
     )
+
+# ID に紐づくユーザ情報の取得
+def getUserById(db: Session, id: int):
+    return db.query(UserModel.User).filter(UserModel.User.id == id).first()
