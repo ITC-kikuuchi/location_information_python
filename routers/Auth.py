@@ -73,9 +73,9 @@ async def login(
 
 
 # ログイン情報取得API
-@router.post("/me")
-def me():
-    pass
+@router.get("/me", response_model=AuthSchema.loginUser)
+async def me(login_user: AuthSchema.loginUser = Depends(get_current_user)):
+    return login_user
 
 
 # ログアウトAPI
