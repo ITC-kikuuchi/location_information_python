@@ -24,9 +24,7 @@ def createTokens(user_id: int):
         "user_id": user_id,
     }
     # アクセストークンの生成
-    accessToken = jwt.encode(
-        accessPayload, os.environ["SECRET_KEY"], algorithm="HS256"
-    )
+    accessToken = jwt.encode(accessPayload, os.environ["SECRET_KEY"], algorithm="HS256")
     # アクセストークンの返却
     return {"access_token": accessToken, "token_type": "bearer"}
 
