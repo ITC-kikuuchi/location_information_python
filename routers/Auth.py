@@ -1,12 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from database import get_db
 from datetime import datetime, timedelta
-from jose import jwt
+from jose import jwt, JWTError
 
 import os
 import cruds.Auth as AuthCrud
+import schemas.Auth as AuthSchema
 
 router = APIRouter()
 
