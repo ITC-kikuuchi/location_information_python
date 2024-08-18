@@ -29,6 +29,31 @@ def createTokens(user_id: int):
     return {"access_token": accessToken, "token_type": "bearer"}
 
 
+# トークンを検証してユーザーを取得
+def get_current_user(
+    token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
+):
+    # エラーメッセージの作成
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Unauthorized",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        # トークンをデコードしてペイロードを取得
+        payload = jwt.decode(token, os.environ["SECRET_KEY"], algorithms=["HS256"])
+        # ID に紐づくユーザ情報の取得
+        user = AuthCrud.getUserById(db, payload["user_id"])
+        if not user:
+            # ID に紐づくユーザ情報が取得できなかった場合
+            raise credentials_exception
+        # ログインユーザ取得API の場合
+        return user
+    except JWTError:
+        # jwt でエラーが発生した場合
+        raise credentials_exception
+
+
 # ログインAPI
 @router.post("/login")
 async def login(
