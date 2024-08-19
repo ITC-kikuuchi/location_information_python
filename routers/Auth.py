@@ -30,7 +30,7 @@ def createTokens(user_id: int):
 
 
 # トークンを検証してユーザーを取得
-def get_current_user(
+def getCurrentUser(
     token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
 ):
     # エラーメッセージの作成
@@ -74,7 +74,7 @@ async def login(
 
 # ログイン情報取得API
 @router.get("/me", response_model=AuthSchema.loginUser)
-async def me(login_user: AuthSchema.loginUser = Depends(get_current_user)):
+async def me(login_user: AuthSchema.loginUser = Depends(getCurrentUser)):
     return login_user
 
 
