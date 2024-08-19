@@ -8,6 +8,7 @@ import models.m_area
 import models.m_attendance
 import models.m_user_status
 
+
 class User(Base):
     __tablename__ = "m_user"
 
@@ -18,14 +19,20 @@ class User(Base):
     user_name_kana = Column(String(255), nullable=False)
     default_area_id = Column(Integer, nullable=False)
     is_admin = Column(Boolean, nullable=False)
-    area_id = Column(Integer, ForeignKey("m_area.id"), nullable=False, server_default='6')
-    attendance_id = Column(Integer, ForeignKey("m_attendance.id"), nullable=False, server_default='6')
-    user_status_id = Column(Integer, ForeignKey("m_user_status.id"), nullable=False, server_default='5')
+    area_id = Column(
+        Integer, ForeignKey("m_area.id"), nullable=False, server_default="6"
+    )
+    attendance_id = Column(
+        Integer, ForeignKey("m_attendance.id"), nullable=False, server_default="6"
+    )
+    user_status_id = Column(
+        Integer, ForeignKey("m_user_status.id"), nullable=False, server_default="5"
+    )
     created_id = Column(Integer)
     updated_id = Column(Integer)
     created_at = Column(Timestamp)
     updated_at = Column(Timestamp)
-    
+
     area = relationship("Area", back_populates="user")
     attendance = relationship("Attendance", back_populates="user")
     user_status = relationship("UserStatus", back_populates="user")

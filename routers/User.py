@@ -30,7 +30,11 @@ def getUsers(loginUser: dict = Depends(getCurrentUser), db: Session = Depends(ge
 
 # ユーザ登録API
 @router.post("/users")
-def createUser(item: UserSchema.createUser, loginUser: dict = Depends(getCurrentUser), db: Session = Depends(get_db)):
+def createUser(
+    item: UserSchema.createUser,
+    loginUser: dict = Depends(getCurrentUser),
+    db: Session = Depends(get_db),
+):
     try:
         # 権限チェック
         if not loginUser.is_admin:
@@ -45,7 +49,7 @@ def createUser(item: UserSchema.createUser, loginUser: dict = Depends(getCurrent
             "mail_address": item.mail_address,
             "password": item.password,
             "is_admin": item.is_admin,
-            "default_area_id": item.default_area_id
+            "default_area_id": item.default_area_id,
         }
         # ユーザデータ登録処理
         UserCrud.createUser(db, user, loginUser)

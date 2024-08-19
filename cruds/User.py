@@ -7,12 +7,11 @@ import models.m_user as UserModel
 def getUsers(db: Session):
     return db.query(UserModel.User).all()
 
+
 # ユーザ登録
 def createUser(db: Session, user, loginUser):
     createUser = UserModel.User(
-        **user,
-        created_id=loginUser.id,
-        updated_id=loginUser.id
+        **user, created_id=loginUser.id, updated_id=loginUser.id
     )
     db.add(createUser)
     db.commit()
