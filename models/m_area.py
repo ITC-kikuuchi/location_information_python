@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.dialects.mysql import TIMESTAMP as Timestamp
+from sqlalchemy.orm import relationship
 
 from database import Base
 
@@ -14,3 +15,5 @@ class Area(Base):
     updated_id = Column(Integer)
     created_at = Column(Timestamp)
     updated_at = Column(Timestamp)
+
+    user = relationship("User", back_populates="area")

@@ -13,6 +13,7 @@ router = APIRouter()
 @router.get("/users", response_model=list[UserSchema.getUsers])
 def getUsers(loginUser: dict = Depends(getCurrentUser), db: Session = Depends(get_db)):
     try:
+        # 権限チェック
         if not loginUser.is_admin:
             # 管理者権限が存在しない場合
             raise HTTPException(
@@ -29,8 +30,34 @@ def getUsers(loginUser: dict = Depends(getCurrentUser), db: Session = Depends(ge
 
 # ユーザ登録API
 @router.post("/users")
-def createUser():
-    pass
+def createUser(
+    item: UserSchema.createUser,
+    loginUser: dict = Depends(getCurrentUser),
+    db: Session = Depends(get_db),
+):
+    try:
+        # 権限チェック
+        if not loginUser.is_admin:
+            # 管理者権限が存在しない場合
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden"
+            )
+        # 登録データの作成
+        user = {
+            "user_name": item.user_name,
+            "user_name_kana": item.user_name_kana,
+            "mail_address": item.mail_address,
+            "password": item.password,
+            "is_admin": item.is_admin,
+            "default_area_id": item.default_area_id,
+        }
+        # ユーザデータ登録処理
+        UserCrud.createUser(db, user, loginUser)
+        return
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # ユーザ詳細取得API
