@@ -34,7 +34,7 @@ def getCurrentUser(
     token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
 ):
     # エラーメッセージの作成
-    credentials_exception = HTTPException(
+    credentialsException = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Unauthorized",
         headers={"WWW-Authenticate": "Bearer"},
@@ -46,12 +46,12 @@ def getCurrentUser(
         user = AuthCrud.getUserById(db, payload["user_id"])
         if not user:
             # ID に紐づくユーザ情報が取得できなかった場合
-            raise credentials_exception
+            raise credentialsException
         # ログインユーザ取得API の場合
         return user
     except JWTError:
         # jwt でエラーが発生した場合
-        raise credentials_exception
+        raise credentialsException
 
 
 # ログインAPI
