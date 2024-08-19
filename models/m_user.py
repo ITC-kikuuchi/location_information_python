@@ -1,8 +1,12 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.dialects.mysql import TIMESTAMP as Timestamp
+from sqlalchemy.orm import relationship
 
 from database import Base
 
+import models.m_area
+import models.m_attendance
+import models.m_user_status
 
 class User(Base):
     __tablename__ = "m_user"
@@ -21,3 +25,7 @@ class User(Base):
     updated_id = Column(Integer)
     created_at = Column(Timestamp)
     updated_at = Column(Timestamp)
+    
+    area = relationship("Area", back_populates="user")
+    attendance = relationship("Attendance", back_populates="user")
+    user_status = relationship("UserStatus", back_populates="user")
