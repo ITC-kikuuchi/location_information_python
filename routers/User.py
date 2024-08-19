@@ -13,6 +13,7 @@ router = APIRouter()
 @router.get("/users", response_model=list[UserSchema.getUsers])
 def getUsers(loginUser: dict = Depends(getCurrentUser), db: Session = Depends(get_db)):
     try:
+        # 権限チェック
         if not loginUser.is_admin:
             # 管理者権限が存在しない場合
             raise HTTPException(
