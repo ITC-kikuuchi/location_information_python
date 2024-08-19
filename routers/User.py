@@ -32,15 +32,18 @@ def getUsers(loginUser: dict = Depends(getCurrentUser), db: Session = Depends(ge
 def createUser():
     pass
 
+
 # ユーザ詳細取得API
 @router.get("/users/{user_id}")
 def getUserDetail():
     pass
 
+
 # ユーザ更新API
 @router.put("/users/{users_id}")
 def updateUser():
     pass
+
 
 # ユーザ削除API
 @router.delete("/users/{users_id}")
