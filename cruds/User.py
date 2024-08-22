@@ -16,3 +16,8 @@ def createUser(db: Session, user, loginUser):
     db.add(createUser)
     db.commit()
     db.refresh(createUser)
+
+
+# ユーザ詳細取得
+def getUserDetail(db: Session, userId: int):
+    return db.query(UserModel.User).filter(UserModel.User.id == userId).first()

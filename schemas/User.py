@@ -24,3 +24,15 @@ class createUser(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class getUserDetail(BaseModel):
+    id: int
+    user_name: Optional[str]
+    user_name_kana: Optional[str]
+    mail_address: Optional[str]
+    is_admin: bool
+    default_area_id: int
+
+    class Config:
+        orm_mode = True
