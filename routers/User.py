@@ -61,9 +61,25 @@ def createUser(
 
 
 # ユーザ詳細取得API
-@router.get("/users/{user_id}")
-def getUserDetail():
-    pass
+@router.get("/users/{user_id}", response_model=UserSchema.getUserDetail)
+def getUserDetail(
+    user_id: int,
+    loginUser: dict = Depends(getCurrentUser),
+    db: Session = Depends(get_db),
+):
+    try:
+        # ユーザID に紐づくデータの取得
+        user = UserCrud.getUserDetail(db, userId=user_id)
+        if not user:
+            # id に紐づくデータが存在しなかった場合
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="NotFound"
+            )
+        return user
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # ユーザ更新API
