@@ -69,7 +69,7 @@ def getUserDetail(
 ):
     try:
         # ユーザID に紐づくデータの取得
-        user = UserCrud.getUserDetail(db, userId=user_id)
+        user = UserCrud.getUserDetail(db, user_id)
         if not user:
             # id に紐づくデータが存在しなかった場合
             raise HTTPException(
