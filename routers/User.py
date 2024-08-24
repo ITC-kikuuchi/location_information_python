@@ -8,17 +8,23 @@ import schemas.User as UserSchema
 
 router = APIRouter()
 
+# 管理者権限及びIDチェック
+def CheckExecutionAuthority(loginUser, user_id = None):
+    # 権限チェック
+    if not loginUser.is_admin:
+        # 管理者権限が存在しない場合
+        if not user_id or loginUser.id != user_id:
+            # ユーザID が存在しない、またはログインユーザのID と一致しない場合
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden"
+            )
 
 # ユーザ一覧取得API
 @router.get("/users", response_model=list[UserSchema.getUsers])
 def getUsers(loginUser: dict = Depends(getCurrentUser), db: Session = Depends(get_db)):
     try:
         # 権限チェック
-        if not loginUser.is_admin:
-            # 管理者権限が存在しない場合
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden"
-            )
+        CheckExecutionAuthority(loginUser)
         # ユーザ一覧取得
         Users = UserCrud.getUsers(db)
         return Users
@@ -37,11 +43,7 @@ def createUser(
 ):
     try:
         # 権限チェック
-        if not loginUser.is_admin:
-            # 管理者権限が存在しない場合
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden"
-            )
+        CheckExecutionAuthority(loginUser)
         # 登録データの作成
         user = {
             "user_name": item.user_name,
@@ -53,7 +55,7 @@ def createUser(
         }
         # ユーザデータ登録処理
         UserCrud.createUser(db, user, loginUser)
-        return
+        return {"message": "Operation completed successfully"}
     except HTTPException:
         raise
     except Exception as e:
@@ -68,6 +70,8 @@ def getUserDetail(
     db: Session = Depends(get_db),
 ):
     try:
+        # 権限チェック
+        CheckExecutionAuthority(loginUser, user_id)
         # ユーザID に紐づくデータの取得
         user = UserCrud.getUserDetail(db, user_id)
         if not user:
