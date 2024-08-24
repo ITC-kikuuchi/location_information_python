@@ -24,11 +24,7 @@ def CheckExecutionAuthority(loginUser, user_id = None):
 def getUsers(loginUser: dict = Depends(getCurrentUser), db: Session = Depends(get_db)):
     try:
         # 権限チェック
-        if not loginUser.is_admin:
-            # 管理者権限が存在しない場合
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden"
-            )
+        CheckExecutionAuthority(loginUser)
         # ユーザ一覧取得
         Users = UserCrud.getUsers(db)
         return Users
@@ -47,11 +43,7 @@ def createUser(
 ):
     try:
         # 権限チェック
-        if not loginUser.is_admin:
-            # 管理者権限が存在しない場合
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden"
-            )
+        CheckExecutionAuthority(loginUser)
         # 登録データの作成
         user = {
             "user_name": item.user_name,
