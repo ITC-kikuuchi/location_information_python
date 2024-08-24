@@ -70,6 +70,8 @@ def getUserDetail(
     db: Session = Depends(get_db),
 ):
     try:
+        # 権限チェック
+        CheckExecutionAuthority(loginUser, user_id)
         # ユーザID に紐づくデータの取得
         user = UserCrud.getUserDetail(db, user_id)
         if not user:
