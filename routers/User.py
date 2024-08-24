@@ -55,7 +55,7 @@ def createUser(
         }
         # ユーザデータ登録処理
         UserCrud.createUser(db, user, loginUser)
-        return
+        return {"message": "Operation completed successfully"}
     except HTTPException:
         raise
     except Exception as e:
