@@ -123,6 +123,27 @@ def updateUser(
 
 
 # ユーザ削除API
-@router.delete("/users/{users_id}")
-def deleteUser():
-    pass
+@router.delete("/users/{user_id}")
+def deleteUser(
+    user_id: int,
+    loginUser: dict = Depends(getCurrentUser),
+    db: Session = Depends(get_db),
+):
+    try:
+        # 権限チェック
+        CheckExecutionAuthority(loginUser, user_id)
+        # ユーザID に紐づくデータの取得
+        user = UserCrud.getUserDetail(db, user_id)
+        if not user:
+            # id に紐づくデータが存在しなかった場合
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="NotFound"
+            )
+        # ユーザデータ削除
+        UserCrud.deleteUser(db, user_id)
+        return {"message": "Operation completed successfully"}
+        return HTTPException(status_code=200)
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
