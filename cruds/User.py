@@ -30,3 +30,9 @@ def updateUser(db: Session, user, loginUser, original: UserModel.User):
 
     original.update_id = loginUser.id
     db.commit()
+
+
+# ユーザ削除
+def deleteUser(db: Session, userId: int):
+    db.query(UserModel.User).filter(UserModel.User.id == userId).delete()
+    db.commit()
