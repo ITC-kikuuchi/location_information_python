@@ -141,8 +141,8 @@ def deleteUser(
             )
         # ユーザデータ削除
         UserCrud.deleteUser(db, user_id)
+        # OK レスポンス
         return {"message": "Operation completed successfully"}
-        return HTTPException(status_code=200)
     except HTTPException:
         raise
     except Exception as e:
