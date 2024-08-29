@@ -27,6 +27,7 @@ def getUsers(loginUser: dict = Depends(getCurrentUser), db: Session = Depends(ge
         CheckExecutionAuthority(loginUser)
         # ユーザ一覧取得
         Users = UserCrud.getUsers(db)
+        # OK レスポンス
         return Users
     except HTTPException:
         raise
@@ -55,6 +56,7 @@ def createUser(
         }
         # ユーザデータ登録処理
         UserCrud.createUser(db, user, loginUser)
+        # OK レスポンス
         return {"message": "Operation completed successfully"}
     except HTTPException:
         raise
@@ -79,6 +81,7 @@ def getUserDetail(
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="NotFound"
             )
+        # OK レスポンス
         return user
     except HTTPException:
         raise
@@ -115,6 +118,7 @@ def updateUser(
         }
         # ユーザデータ更新処理
         UserCrud.updateUser(db, updateUser, loginUser, user)
+        # OK レスポンス
         return {"message": "Operation completed successfully"}
     except HTTPException:
         raise
