@@ -21,13 +21,13 @@ def CheckExecutionAuthority(loginUser, user_id = None):
             )
 
 # ユーザ一覧取得API
-@router.get("/users", response_model=list[UserSchema.getUsers])
+@router.get("/users", response_model=Dict[str, list[UserSchema.getUsers]])
 def getUsers(loginUser: dict = Depends(getCurrentUser), db: Session = Depends(get_db)):
     try:
         # 権限チェック
         CheckExecutionAuthority(loginUser)
         # ユーザ一覧取得
-        Users = UserCrud.getUsers(db)
+        Users = {'user_list': UserCrud.getUsers(db)}
         # OK レスポンス
         return Users
     except HTTPException:
