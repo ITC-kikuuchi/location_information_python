@@ -11,9 +11,17 @@ import schemas.Area as AreaSchema
 router = APIRouter()
 
 # エリア一覧取得API
-@router.post("/areas")
-def getAreas():
-    pass
+@router.get("/areas", response_model=Dict[str, list[AreaSchema.getAreas]])
+def getAreas(loginUser: dict = Depends(getCurrentUser), db: Session = Depends(get_db)):
+    try:
+        # エリア一覧取得
+        areas = {'area_list': AreaCrud.getAreas(db)}
+        # OK レスポンス
+        return areas
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 # エリア登録API
 @router.post("/areas")
