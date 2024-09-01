@@ -10,3 +10,11 @@ class getAreas(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class createArea(BaseModel):
+    area_name: Optional[str]
+    is_default_area: bool
+
+    class Config:
+        orm_mode = True
