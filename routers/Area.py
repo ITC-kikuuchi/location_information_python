@@ -10,8 +10,9 @@ import schemas.Area as AreaSchema
 
 router = APIRouter()
 
+
 # 管理者権限及びIDチェック
-def CheckExecutionAuthority(loginUser, user_id = None):
+def CheckExecutionAuthority(loginUser, user_id=None):
     # 権限チェック
     if not loginUser.is_admin:
         # 管理者権限が存在しない場合
@@ -27,13 +28,14 @@ def CheckExecutionAuthority(loginUser, user_id = None):
 def getAreas(loginUser: dict = Depends(getCurrentUser), db: Session = Depends(get_db)):
     try:
         # エリア一覧取得
-        areas = {'area_list': AreaCrud.getAreas(db)}
+        areas = {"area_list": AreaCrud.getAreas(db)}
         # OK レスポンス
         return areas
     except HTTPException:
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 # エリア登録API
 @router.post("/areas")
@@ -59,15 +61,18 @@ def createArea(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
 # エリア詳細取得API
 @router.get("/areas/{area_id}")
 def getAreaDetail():
     pass
 
+
 # エリア更新API
 @router.put("/areas/{area_id}")
 def updateArea():
     pass
+
 
 # エリア削除API
 @router.delete("/areas/{area_id}")
