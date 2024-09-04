@@ -16,3 +16,8 @@ def createArea(db: Session, area, loginUser):
     db.add(createArea)
     db.commit()
     db.refresh(createArea)
+
+
+# エリア詳細取得
+def getAreaDetail(db: Session, areaId: int):
+    return db.query(AreaModel.Area).filter(AreaModel.Area.id == areaId).first()
