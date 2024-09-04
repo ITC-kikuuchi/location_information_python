@@ -18,3 +18,12 @@ class createArea(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class getAreaDetail(BaseModel):
+    id: int
+    area_name: Optional[str]
+    is_default_area: bool
+
+    class Config:
+        orm_mode = True
