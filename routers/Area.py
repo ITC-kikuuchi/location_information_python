@@ -63,9 +63,28 @@ def createArea(
 
 
 # エリア詳細取得API
-@router.get("/areas/{area_id}")
-def getAreaDetail():
-    pass
+@router.get("/areas/{area_id}", response_model=AreaSchema.getAreaDetail)
+def getAreaDetail(
+    area_id: int,
+    loginUser: dict = Depends(getCurrentUser),
+    db: Session = Depends(get_db),
+    ):
+    try:
+        # 権限チェック
+        CheckExecutionAuthority(loginUser)
+        # エリアID に紐づくデータの取得
+        area = AreaCrud.getAreaDetail(db, area_id)
+        if not area:
+            # id に紐づくデータが存在しなかった場合
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="NotFound"
+            )
+        # OK レスポンス
+        return area
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # エリア更新API
