@@ -68,7 +68,7 @@ def getAreaDetail(
     area_id: int,
     loginUser: dict = Depends(getCurrentUser),
     db: Session = Depends(get_db),
-    ):
+):
     try:
         # 権限チェック
         CheckExecutionAuthority(loginUser)
@@ -93,7 +93,8 @@ def updateArea(
     area_id: int,
     item: AreaSchema.updateArea,
     loginUser: dict = Depends(getCurrentUser),
-    db: Session = Depends(get_db),):
+    db: Session = Depends(get_db),
+):
     try:
         # 権限チェック
         CheckExecutionAuthority(loginUser)
