@@ -27,3 +27,11 @@ class getAreaDetail(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class updateArea(BaseModel):
+    area_name: Optional[str]
+    is_default_area: bool
+
+    class Config:
+        orm_mode = True
