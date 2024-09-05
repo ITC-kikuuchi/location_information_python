@@ -89,8 +89,34 @@ def getAreaDetail(
 
 # エリア更新API
 @router.put("/areas/{area_id}")
-def updateArea():
-    pass
+def updateArea(
+    area_id: int,
+    item: AreaSchema.updateArea,
+    loginUser: dict = Depends(getCurrentUser),
+    db: Session = Depends(get_db),):
+    try:
+        # 権限チェック
+        CheckExecutionAuthority(loginUser)
+        # ユーザID に紐づくデータの取得
+        area = AreaCrud.getAreaDetail(db, area_id)
+        if not area:
+            # id に紐づくデータが存在しなかった場合
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="NotFound"
+            )
+        # 更新データの作成
+        updateArea = {
+            "area_name": item.area_name,
+            "is_default_area": item.is_default_area,
+        }
+        # ユーザデータ更新処理
+        AreaCrud.updateArea(db, updateArea, loginUser, area)
+        # OK レスポンス
+        return {"message": "Operation completed successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # エリア削除API
