@@ -30,3 +30,9 @@ def updateArea(db: Session, area, loginUser, original: AreaModel.Area):
 
     original.update_id = loginUser.id
     db.commit()
+
+
+# エリア削除
+def deleteArea(db: Session, areaId: int):
+    db.query(AreaModel.Area).filter(AreaModel.Area.id == areaId).delete()
+    db.commit()
