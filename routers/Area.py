@@ -122,5 +122,26 @@ def updateArea(
 
 # エリア削除API
 @router.delete("/areas/{area_id}")
-def deleteArea():
-    pass
+def deleteArea(
+    area_id: int,
+    loginUser: dict = Depends(getCurrentUser),
+    db: Session = Depends(get_db),
+):
+    try:
+        # 権限チェック
+        CheckExecutionAuthority(loginUser)
+        # エリアID に紐づくデータの取得
+        area = AreaCrud.getAreaDetail(db, area_id)
+        if not area:
+            # id に紐づくデータが存在しなかった場合
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="NotFound"
+            )
+        # エリアデータ削除
+        AreaCrud.deleteArea(db, area_id)
+        # OK レスポンス
+        return {"message": "Operation completed successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
