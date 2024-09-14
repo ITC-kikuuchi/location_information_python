@@ -10,6 +10,7 @@ import schemas.UserStatus as UserStatusSchema
 
 router = APIRouter()
 
+
 # ユーザステータス一覧取得API
 @router.get(
     "/user-status", response_model=Dict[str, list[UserStatusSchema.getUserStatus]]
