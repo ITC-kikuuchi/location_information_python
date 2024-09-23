@@ -31,6 +31,8 @@ def getUsers(loginUser: dict = Depends(getCurrentUser), db: Session = Depends(ge
                 area_name=user.area.area_name,
                 attendance_id=user.attendance.id,
                 attendance_status=user.attendance.attendance_status,
+                status_id=user.user_status.id,
+                user_status=user.user_status.user_status
             )
             transformed_users.append(transformed_user)
         # OK レスポンス
