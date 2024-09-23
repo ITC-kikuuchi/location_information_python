@@ -10,6 +10,7 @@ def getUserLocations(db: Session):
         .options(
             joinedload(UserModel.User.area),
             joinedload(UserModel.User.attendance),
+            joinedload(UserModel.User.user_status),
         )
         .all()
     )
