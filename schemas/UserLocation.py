@@ -11,6 +11,8 @@ class getUserLocations(BaseModel):
     area_name: Optional[str]
     attendance_id: int
     attendance_status: Optional[str]
+    status_id: int
+    user_status: Optional[str]
 
     class Config:
         orm_mode = True
